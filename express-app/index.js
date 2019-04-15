@@ -18,6 +18,11 @@ app.get('/api/courses/:id/:name', (req,res) => {
     return;
 });
 
+app.get('/api/posts/:year/:month', (req,res) => {
+    res.send(req.query);
+    return;
+});
+
 app.listen(port, ()=>{
     console.log(`Listening on..${port}`);
 });
