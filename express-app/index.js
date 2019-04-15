@@ -3,26 +3,21 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-app.get('/',(req,res)=>{
-    res.send('Hi Faizal');
+const courses = [
+    { id: 1, name: 'NodeJS' },
+    { id: 2, name: 'Angular' }
+];
+
+app.get('/api/courses/:id', (req, res) => {
+    const course = courses.find(c =>
+        c.id === parseInt(req.params.id)
+    );
+    if (!course) {
+        res.status(404).send('Course with given id not found.')
+    }
+    res.send(course);
 });
 
-app.get('/api/courses/:id', (req,res) => {
-    id = req.params.id;
-    res.send(`Id: ${id}`);
-    return;
-});
-
-app.get('/api/courses/:id/:name', (req,res) => {
-    res.send(req.params);
-    return;
-});
-
-app.get('/api/posts/:year/:month', (req,res) => {
-    res.send(req.query);
-    return;
-});
-
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Listening on..${port}`);
 });
