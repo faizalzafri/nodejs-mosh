@@ -1,22 +1,29 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-app.use(express.json);
 
-const port = process.env.PORT || 3000;
+app.use(bodyParser.json());
 
 const courses = [
     { id: 1, name: 'NodeJS' },
     { id: 2, name: 'Angular' }
 ];
 
+app.get('/api/courses', (req, res) => {
+    res.send(courses);
+    res.end();
+});
+
 app.get('/api/courses/:id', (req, res) => {
     const course = courses.find(c =>
         c.id === parseInt(req.params.id)
     );
+
     if (!course) {
         res.status(404).send('Course with given id not found.')
     }
     res.send(course);
+    res.end();
 });
 
 app.post('/api/courses', (req, res) => {
@@ -26,8 +33,9 @@ app.post('/api/courses', (req, res) => {
     }
     courses.push(course);
     res.send(course);
+    res.end();
 });
 
-app.listen(port, () => {
-    console.log(`Listening on..${port}`);
+app.listen(3000, () => {
+    console.log('Listening on..');
 });
