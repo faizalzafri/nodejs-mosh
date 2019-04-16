@@ -5,10 +5,6 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const courseSchema = {
-    name: Joi.string().min(3).required()
-};
-
 const courses = [
     { id: 1, name: 'NodeJS' },
     { id: 2, name: 'Angular' }
@@ -32,20 +28,13 @@ app.get('/api/courses/:id', (req, res) => {
 
 app.post('/api/courses', (req, res) => {
 
-    const result = Joi.validate(req.body, courseSchema);
-
-
-    if (result.error) {
-        res.status(400).send(result.error.details[0].message);
+    const { error } = validate(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
         res.end();
         return;
     }
 
-    // if(req.body.name || req.body.name.length < 3){
-    //   res.status(400).send('Name is invalid');
-    //   res.end();
-    //   return;
-    // }
     const course = {
         id: courses.length + 1,
         name: req.body.name
@@ -55,7 +44,33 @@ app.post('/api/courses', (req, res) => {
     res.end();
 });
 
+app.put('/api/courses/:id', (req, res) => {
+
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) {
+        res.status(404).send('Course with given id not found.');
+        res.end();
+        return;
+    }
+
+    const { error } = validate(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
+        res.end();
+        return;
+    }
+
+    course.name = req.body.name;
+    res.send(course);
+    res.end();
+});
+
 app.listen(3000, () => {
     console.log('Listening on..');
 });
+
+function validate(course) {
+    const courseSchema = { name: Joi.string().min(3).required() };
+    return Joi.validate(course, courseSchema);
+}
 
