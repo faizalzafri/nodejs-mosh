@@ -65,6 +65,21 @@ app.put('/api/courses/:id', (req, res) => {
     res.end();
 });
 
+app.delete('/api/courses/:id', (req, res) => {
+
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) {
+        res.status(404).send('Course with given id not found.');
+        res.end();
+        return;
+    }
+
+    const index = courses.indexOf(course);
+    courses.splice(index, 1);
+    res.send(course);
+    res.end();
+});
+
 app.listen(3000, () => {
     console.log('Listening on..');
 });
@@ -73,4 +88,3 @@ function validate(course) {
     const courseSchema = { name: Joi.string().min(3).required() };
     return Joi.validate(course, courseSchema);
 }
-
