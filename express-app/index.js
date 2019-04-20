@@ -1,3 +1,5 @@
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
 const config = require('config');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -17,14 +19,14 @@ app.use(helmet());
 
 if (app.get('env') === 'development') {
     app.use(morgan('dev'));
-    console.log('Using Morgan');
+    startupDebugger('Using Morgan');
+    dbDebugger('Connecting DB');
 }
 app.use(logger);
 app.use(auth);
 
 console.log('App Name: ' + config.get('name'));
 console.log('Mail Server Name: ' + config.get('mail.host'));
-console.log('Mail Password : ' + config.get('mail.password'));
 
 const courses = [
     { id: 1, name: 'NodeJS' },
