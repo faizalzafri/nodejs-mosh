@@ -1,10 +1,25 @@
+// replacing anonymous function with named functions
+
+console.log('Before');
+getUser(1, getRepos);
+console.log('After');
+
+function getRepos(user) {
+    getRepos(user.name, getCommits);
+}
+
+function getCommits(repos) {
+    getCommits(repos[0], displayCommits);
+}
+
+function displayCommits(commits) {
+    console.log(commits);
+}
+
 function getUser(id, callback) {
     setTimeout(() => {
         console.log('Reading User from database');
-        const user = {
-            id: 1, name: 'Zyx'
-        }
-        callback(user);
+        callback({ id: 1, name: 'Zyx' });
     }, 2000);
 }
 
@@ -15,11 +30,10 @@ function getRepos(username, callback) {
     }, 2000);
 }
 
-console.log('Before');
-const user = getUser(1, (user) => {
-    console.log('User: ' + user.name);
-    getRepos(user.name, (repos) => {
-        console.log(repos);
-    })
-});
-console.log('After');
+
+function getCommits(repo, callback) {
+    setTimeout(() => {
+        console.log('Getting commits for repo: ');
+        callback(['commit1', 'commit2']);
+    }, 3000);
+}
