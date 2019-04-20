@@ -1,5 +1,5 @@
 const startupDebugger = require('debug')('app:startup');
-const dbDebugger = require('debug')('app:db');
+const dbDebugger = require('debug')('db:startup');
 const config = require('config');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,6 +12,9 @@ const auth = require('./auth');
 
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views'); //default
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); //create folder public in root and put a readme.txt file in it
@@ -20,7 +23,6 @@ app.use(helmet());
 if (app.get('env') === 'development') {
     app.use(morgan('dev'));
     startupDebugger('Using Morgan');
-    dbDebugger('Connecting DB');
 }
 app.use(logger);
 app.use(auth);
@@ -32,6 +34,11 @@ const courses = [
     { id: 1, name: 'NodeJS' },
     { id: 2, name: 'Angular' }
 ];
+
+app.get('/', (req, res) => {
+    res.render('index', { titletext: 'Demo Pug App', message: 'Some Text Here' });
+    res.end();
+});
 
 app.get('/api/courses', (req, res) => {
     res.send(courses);
@@ -111,4 +118,3 @@ function validate(course) {
     const courseSchema = { name: Joi.string().min(3).required() };
     return Joi.validate(course, courseSchema);
 }
-
