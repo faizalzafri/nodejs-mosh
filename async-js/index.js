@@ -1,7 +1,11 @@
 console.log('Before');
-
-setTimeout(() => {
-    console.log('Some async operaton');
-}, 2000)
-
+const user = getUser(1);
+console.log(user);
 console.log('After');
+
+function getUser(id) {
+    setTimeout(() => {
+        console.log('Reading User from database');
+        return { id: id, name: 'Zyx' };
+    }, 2000);
+}
