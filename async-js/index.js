@@ -1,39 +1,58 @@
-// replacing anonymous function with named functions
-
 console.log('Before');
-getUser(1, getRepos);
+getUser(1, (user) => {
+  getRepositories(user.user, (repos) => {
+    getCommits(repos[0], (commits) => {
+      console.log(commits);
+    })
+  })
+});
 console.log('After');
 
-function getRepos(user) {
-    getRepos(user.name, getCommits);
-}
-
-function getCommits(repos) {
-    getCommits(repos[0], displayCommits);
-}
-
-function displayCommits(commits) {
-    console.log(commits);
-}
-
 function getUser(id, callback) {
-    setTimeout(() => {
-        console.log('Reading User from database');
-        callback({ id: 1, name: 'Zyx' });
-    }, 2000);
+  setTimeout(() => {
+    console.log('Reading a user from a database...');
+    callback({ id: id, user: 'faiz' });
+  }, 2000);
 }
 
-function getRepos(username, callback) {
-    setTimeout(() => {
-        console.log('Getting repos from github api');
-        callback(['repo1', 'repo2', 'repo3']);
-    }, 2000);
+function getRepositories(username, callback) {
+  setTimeout(() => {
+    console.log('Calling GitHub API...');
+    callback(['repo1', 'repo2', 'repo3']);
+  }, 2000);
 }
-
 
 function getCommits(repo, callback) {
-    setTimeout(() => {
-        console.log('Getting commits for repo: ');
-        callback(['commit1', 'commit2']);
-    }, 3000);
+  setTimeout(() => {
+    console.log('Calling GitHub API...');
+    callback(['commit']);
+  }, 2000);
+}
+
+function getUser(id) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('Reading a user from a database...');
+            resolve({ id: id, user: 'faiz' });
+        }, 2000);
+    });
+
+}
+
+function getRepositories(username) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('Calling GitHub API...');
+            resolve(['repo1', 'repo2', 'repo3']);
+        }, 2000);
+    });
+}
+
+function getCommits(repo) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            console.log('Calling GitHub API...');
+            resolve(['commit']);
+        }, 2000);
+    });
 }
