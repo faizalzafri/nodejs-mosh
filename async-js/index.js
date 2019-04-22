@@ -1,16 +1,22 @@
 console.log('Before');
 
-getUser(1)
-    .then(user => getRepositories(user.name))
-    .then(repo => getCommits(repo))
-    .then(commits => console.log(commits))
-    .catch(error => console.log(error.message));
+//promise approach
+// getUser(1)
+//     .then(user => getRepositories(user.name))
+//     .then(repo => getCommits(repo))
+//     .then(commits => console.log(commits))
+//     .catch(error => console.log(error.message));
 
-async function displayCommits(){
-    const user = await getUser(1);
-    const repos = await getRepositories(user.name);
-    const commits = await getCommits(repo[0]);
-    console.log(commits);
+//async await approach
+async function displayCommits() {
+    try {
+        const user = await getUser(1);
+        const repos = await getRepositories(user.name);
+        const commits = await getCommits(repos[0]);
+        console.log(commits);
+    } catch (err) {
+        console.log('Error', err.message);
+    }
 }
 displayCommits();
 
@@ -39,7 +45,8 @@ function getCommits(repo) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             console.log('Calling GitHub API...');
-            resolve(['commit']);
+            //resolve(['commit']);
+            reject(new Error('Could not get commits'))
         }, 2000);
     });
 }
