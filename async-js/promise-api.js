@@ -14,10 +14,29 @@ const parallelPromise1 = new Promise((resolve) => {
 const parallelPromise2 = new Promise((resolve) => {
     setTimeout(() => {
         console.log('Async opn 2')
-        resolve(1);
+        resolve(2);
     }, 2000);
 });
 
 Promise.all([parallelPromise1, parallelPromise2])
-    .then(result => console.log(result));
+    .then(result => console.log('result',result))
+    .catch(error => console.log('error',error.message));
+
+const parallelPromise3 = new Promise((resolve,reject) => {
+    setTimeout(() => {
+        console.log('Async opn 3')
+        resolve(3);
+    }, 2000);
+});
+
+const parallelPromise4 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        console.log('Async opn 4')
+        reject(new Error('4'));
+    }, 2000);
+});
+
+Promise.all([parallelPromise3, parallelPromise4])
+    .then(result => console.log('result',result))
+    .catch(error => console.log('error',error.message));
 
