@@ -19,24 +19,24 @@ const parallelPromise2 = new Promise((resolve) => {
 });
 
 Promise.all([parallelPromise1, parallelPromise2])
-    .then(result => console.log('result',result))
-    .catch(error => console.log('error',error.message));
+    .then(result => console.log('result', result))
+    .catch(error => console.log('error', error.message));
 
-const parallelPromise3 = new Promise((resolve,reject) => {
+const parallelPromise5 = new Promise((resolve, reject) => {
     setTimeout(() => {
-        console.log('Async opn 3')
-        resolve(3);
+        console.log('Async opn 5')
+        resolve(5);
     }, 2000);
 });
 
-const parallelPromise4 = new Promise((resolve, reject) => {
+const parallelPromise6 = new Promise((resolve, reject) => {
     setTimeout(() => {
-        console.log('Async opn 4')
-        reject(new Error('4'));
+        console.log('Async opn 6')
+        resolve(new Error('6'));
     }, 2000);
 });
 
-Promise.all([parallelPromise3, parallelPromise4])
-    .then(result => console.log('result',result))
-    .catch(error => console.log('error',error.message));
+Promise.race([parallelPromise6, parallelPromise5])
+    .then(result => console.log('result', result))
+    .catch(error => console.log('error', error.message));
 
