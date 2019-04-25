@@ -18,13 +18,15 @@ const Course = mongoose.model('Course', courseSchema);
 async function getData() {
 
     const courses = await Course
-        .find()
-        .or({ author: 'Faizal', isPublished: true });
+        // .find({ author: /^Faizal/i })
+        // .find({ author: /.*zal$/i })
+        .find({ author: /.*Faiz.*/ })
+        .select();
     console.log(courses);
 
     const courses2 = await Course
         .find()
-        .and({ author: 'Faizal', isPublished: false });
+        .count();
     console.log(courses2);
 }
 getData();
