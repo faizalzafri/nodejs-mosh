@@ -17,17 +17,14 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function getData() {
 
-    const courses1 = await Course
-        .find({ price: { $gt: 10 } });
-    console.log(courses1);
+    const courses = await Course
+        .find()
+        .or({ author: 'Faizal', isPublished: true });
+    console.log(courses);
 
     const courses2 = await Course
-        .find({ price: { $gt: 10, $lt: 20 } });
+        .find()
+        .and({ author: 'Faizal', isPublished: false });
     console.log(courses2);
-
-    const courses3 = await Course
-        .find({ price: { $in: [15, 20, 25] } });
-    console.log(courses3);
 }
-
 getData();
