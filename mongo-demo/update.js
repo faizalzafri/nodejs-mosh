@@ -22,8 +22,13 @@ async function updateCourse(id) {
     if (!course)
         return;
 
-    course.isPublished = true;
-    course.author = 'Faiz';
+    // course.isPublished = true;
+    // course.author = 'Faiz';
+
+    course.set({
+        isPublished: false,
+        author: 'XYZ'
+    });
 
     const result = await course.save();
     console.log(result);
