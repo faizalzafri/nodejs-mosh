@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/playground')
+mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true })
     .then(() => console.log('Connected'))
     .catch(() => console.log('Failed to connect'));
 
@@ -17,21 +17,48 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function updateCourse(id) {
 
-    const course = await Course.findById(id);
+    const result = await Course.updateOne(
+        { _id: id },
+        {
+            isPublished: false,
+            author: 'XYZ1'
+        }
+    );
 
-    if (!course)
-        return;
+    console.log('Update Result', result);
+}
 
-    // course.isPublished = true;
-    // course.author = 'Faiz';
+async function updateCourse2(id) {
 
-    course.set({
-        isPublished: false,
-        author: 'XYZ'
-    });
+    const course = await Course.findOneAndUpdate(
+        { _id: id },
+        {
+            $set: {
+                isPublished: true,
+                author: 'XYZ'
+            }
+        }
+    );
 
-    const result = await course.save();
-    console.log(result);
+    console.log('Original Document', course);
+}
+
+async function updateCourse3(id) {
+
+    const course = await Course.findByIdAndUpdate(
+        { _id: id },
+        {
+            $set: {
+                isPublished: false,
+                author: 'XYZ'
+            }
+        },
+        { new: true }
+    );
+
+    console.log('Update Course', course);
 }
 
 updateCourse('5cc20b60d027bf0984ff2db7');
+updateCourse2('5cc20b60d027bf0984ff2db7');
+updateCourse3('5cc20b60d027bf0984ff2db7');
