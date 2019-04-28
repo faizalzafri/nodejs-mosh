@@ -28,5 +28,14 @@ async function getData() {
         .find()
         .count();
     console.log(courses2);
+
+    const pageNumber = 2;
+    const pageSize = 10;
+    const course3 = await Course
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
+        .select({ name: 1 });
+
+    console.log(course3);
 }
 getData();
