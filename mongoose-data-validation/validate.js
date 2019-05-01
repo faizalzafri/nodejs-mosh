@@ -5,7 +5,13 @@ mongoose.connect('mongodb://localhost/playground')
     .catch(() => console.log('Failed to connect'));
 
 const courseSchema = new mongoose.Schema({
-    name: { type: String, required: true },
+    name: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 255
+        // match: 
+    },
     author: String,
     tags: [String],
     date: { type: Date, default: Date.now },
