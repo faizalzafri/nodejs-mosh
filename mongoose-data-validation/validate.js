@@ -10,7 +10,7 @@ const courseSchema = new mongoose.Schema({
     tags: [String],
     date: { type: Date, default: Date.now },
     isPublished: Boolean,
-    price: Number
+    price: { type: Number, required: function () { return this.isPublished; } }
 });
 
 async function createCourse() {
@@ -20,17 +20,12 @@ async function createCourse() {
         author: 'Gigte',
         tags: ['node', 'backend'],
         isPublished: true,
-        price: 15
+        //price: 15
     });
 
     try {
-        //const result = await course.save();
-        //const result = await course.validate();
-
-        course.validate((err) => {
-            if (err)
-                console.log(err.message);
-        });
+        const result = await course.save();
+        console.log(result);
     }
     catch (ex) {
         console.log(ex.message);
