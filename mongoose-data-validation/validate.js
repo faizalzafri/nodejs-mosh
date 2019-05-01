@@ -12,6 +12,7 @@ const courseSchema = new mongoose.Schema({
         maxlength: 255
         // match: 
     },
+    category: { type: String, enum: ['WebDev', 'MobDev', 'DbAdmin'] },
     author: String,
     tags: [String],
     date: { type: Date, default: Date.now },
@@ -22,7 +23,8 @@ const courseSchema = new mongoose.Schema({
 async function createCourse() {
     const Course = mongoose.model('Course', courseSchema);
     const course = new Course({
-        //name: 'NodeJS',
+        name: 'No',
+        category: '',
         author: 'Gigte',
         tags: ['node', 'backend'],
         isPublished: true,
