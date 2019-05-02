@@ -57,8 +57,8 @@ async function createCourse() {
         console.log(result);
     }
     catch (ex) {
-        console.log(ex);
+        for (error in ex.errors)
+            console.log(ex.errors[error].message);
     }
 }
 createCourse();
-
