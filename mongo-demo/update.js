@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/playground')
     .then(() => console.log('Connected'))
     .catch(() => console.log('Failed to connect'));
 
@@ -53,7 +53,7 @@ async function updateCourse3(id) {
                 author: 'XYZ'
             }
         },
-        { new: true }
+        { returnDocument: 'after' }
     );
 
     console.log('Update Course', course);

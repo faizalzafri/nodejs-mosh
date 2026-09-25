@@ -24,13 +24,9 @@ const courseSchema = new mongoose.Schema({
     tags: {
         type: Array,
         validate: {
-            isAsync: true,
-            validator: function (v, callback) {
-                setTimeout(() => {
-                    //Do some async work
-                    const result = v && v.length > 0;
-                    callback(result);
-                }, 4000)
+            validator: async function (v) {
+                //Do some async work
+                await new Promise(resolve => setTimeout(resolve, 4000));
                 return v && v.length > 0;
             },
             message: 'A course should have atleast one tag'

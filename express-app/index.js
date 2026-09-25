@@ -37,7 +37,6 @@ const courses = [
 
 app.get('/', (req, res) => {
     res.render('index', { titletext: 'Demo Pug App', message: 'Some Text Here' });
-    res.end();
 });
 
 app.get('/api/courses', (req, res) => {
@@ -115,6 +114,6 @@ app.listen(3000, () => {
 });
 
 function validate(course) {
-    const courseSchema = { name: Joi.string().min(3).required() };
-    return Joi.validate(course, courseSchema);
+    const courseSchema = Joi.object({ name: Joi.string().min(3).required() });
+    return courseSchema.validate(course);
 }
