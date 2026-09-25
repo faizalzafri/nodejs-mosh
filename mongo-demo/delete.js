@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/playground', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost/playground')
     .then(() => console.log('Connected'))
     .catch(() => console.log('Failed to connect'));
 
@@ -20,7 +20,7 @@ async function updateCourse(id) {
     // const result = await Course.deleteOne({ _id: id });
     // console.log('Delete Result', result);
 
-    const course = await Course.findByIdAndRemove(id);
+    const course = await Course.findByIdAndDelete(id);
     console.log('Deleted Doc', course);
 }
 
