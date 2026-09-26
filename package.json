@@ -7,7 +7,9 @@
     "node": ">=20.19"
   },
   "scripts": {
-    "start": "cd express-app && node index.js"
+    "start": "cd express-app && node index.js",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down"
   },
   "dependencies": {
     "body-parser": "^2.3.0",
