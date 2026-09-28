@@ -1,6 +1,5 @@
-const startupDebugger = require('debug')('app:startup');
-const dbDebugger = require('debug')('db:startup');
-const config = require('config');
+// Logs only when NODE_DEBUG=app is set.
+const debug = require('node:util').debuglog('app');
 const express = require('express');
 const Joi = require('joi');
 const helmet = require('helmet');
@@ -18,7 +17,7 @@ app.use(helmet());
 
 if (app.get('env') === 'development') {
     app.use(morgan('dev'));
-    startupDebugger('Using Morgan');
+    debug('Using Morgan');
 }
 
 // Custom middleware example: runs on every request, then passes control on.
@@ -27,8 +26,8 @@ app.use((req, res, next) => {
     next();
 });
 
-console.log('App Name: ' + config.get('name'));
-console.log('Mail Server Name: ' + config.get('mail.host'));
+console.log('App Name: ' + (process.env.APP_NAME ?? 'default-profile'));
+console.log('Mail Server Name: ' + (process.env.MAIL_HOST ?? 'not set'));
 
 const courses = [
     { id: 1, name: 'NodeJS' },
