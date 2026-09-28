@@ -1,6 +1,0 @@
-{
-    "name": "dev-profile",
-    "mail": {
-        "host": "dev-mail-server"
-    }
-}
