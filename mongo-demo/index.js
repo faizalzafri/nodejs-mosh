@@ -1,40 +1,21 @@
-const mongoose = require('mongoose');
+const { Course, run } = require('./db');
 
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/playground')
-    .then(() => console.log('Connected'))
-    .catch(() => console.log('Failed to connect'));
-
-const courseSchema = new mongoose.Schema({
-    name: String,
-    author: String,
-    tags: [String],
-    date: { type: Date, default: Date.now },
-    isPublished: Boolean,
-    price: Number
-});
-
-async function createCourse() {
-    const Course = mongoose.model('Course', courseSchema);
-    const course = new Course({
+run(async () => {
+    const course = await Course.create({
         name: 'NodeJS',
         author: 'Faizal',
         tags: ['node', 'backend'],
         isPublished: true,
         price: 15
     });
+    console.log(course);
 
-    const course2 = new Course({
+    const course2 = await Course.create({
         name: 'Angular5',
         author: 'Faizal',
         tags: ['angular', 'frontend'],
         isPublished: true,
         price: 25
     });
-
-    const result = await course.save();
-    console.log(result);
-
-    const result2 = await course2.save();
-    console.log(result2);
-}
-createCourse();
+    console.log(course2);
+});

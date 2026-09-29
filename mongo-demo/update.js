@@ -1,22 +1,13 @@
-const mongoose = require('mongoose');
+const { Course, run } = require('./db');
 
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/playground')
-    .then(() => console.log('Connected'))
-    .catch(() => console.log('Failed to connect'));
+// Usage: node update.js <courseId>
+const id = process.argv[2];
+if (!id) {
+    console.error('Usage: node update.js <courseId>');
+    process.exit(1);
+}
 
-const courseSchema = new mongoose.Schema({
-    name: String,
-    author: String,
-    tags: [String],
-    date: { type: Date, default: Date.now },
-    isPublished: Boolean,
-    price: Number
-});
-
-const Course = mongoose.model('Course', courseSchema);
-
-async function updateCourse(id) {
-
+run(async () => {
     const result = await Course.updateOne(
         { _id: id },
         {
@@ -24,13 +15,9 @@ async function updateCourse(id) {
             author: 'XYZ1'
         }
     );
-
     console.log('Update Result', result);
-}
 
-async function updateCourse2(id) {
-
-    const course = await Course.findOneAndUpdate(
+    const original = await Course.findOneAndUpdate(
         { _id: id },
         {
             $set: {
@@ -39,14 +26,10 @@ async function updateCourse2(id) {
             }
         }
     );
+    console.log('Original Document', original);
 
-    console.log('Original Document', course);
-}
-
-async function updateCourse3(id) {
-
-    const course = await Course.findByIdAndUpdate(
-        { _id: id },
+    const updated = await Course.findByIdAndUpdate(
+        id,
         {
             $set: {
                 isPublished: false,
@@ -55,10 +38,5 @@ async function updateCourse3(id) {
         },
         { returnDocument: 'after' }
     );
-
-    console.log('Update Course', course);
-}
-
-updateCourse('5cc20b60d027bf0984ff2db7');
-updateCourse2('5cc20b60d027bf0984ff2db7');
-updateCourse3('5cc20b60d027bf0984ff2db7');
+    console.log('Updated Document', updated);
+});
