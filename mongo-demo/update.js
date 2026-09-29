@@ -1,6 +1,5 @@
 const { Course, run } = require('./db');
 
-// Usage: node update.js <courseId>
 const id = process.argv[2];
 if (!id) {
     console.error('Usage: node update.js <courseId>');
