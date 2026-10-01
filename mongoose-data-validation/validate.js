@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-
-mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/playground')
-    .then(() => console.log('Connected'))
-    .catch(() => console.log('Failed to connect'));
+const { setTimeout } = require('node:timers/promises');
+const { run } = require('../mongo-demo/db');
 
 const courseSchema = new mongoose.Schema({
     name: {
@@ -10,26 +8,24 @@ const courseSchema = new mongoose.Schema({
         required: true,
         minlength: 3,
         maxlength: 255
-        // match: 
     },
     category: {
         type: String,
         required: true,
         enum: ['webdev', 'mobdev', 'dbadmin'],
         lowercase: true,
-        // uppercase: true,
         trim: true
     },
     author: String,
     tags: {
         type: Array,
         validate: {
-            validator: async function (v) {
-                //Do some async work
-                await new Promise(resolve => setTimeout(resolve, 4000));
+            // Async validator: mongoose waits for the returned promise.
+            validator: async (v) => {
+                await setTimeout(100);
                 return v && v.length > 0;
             },
-            message: 'A course should have atleast one tag'
+            message: 'A course should have at least one tag'
         }
     },
     date: { type: Date, default: Date.now },
@@ -46,9 +42,22 @@ const courseSchema = new mongoose.Schema({
     }
 });
 
-async function createCourse() {
-    const Course = mongoose.model('Course', courseSchema);
-    const course = new Course({
+// Own model name so it does not clash with Course from db.js.
+const Course = mongoose.model('ValidatedCourse', courseSchema);
+
+async function createCourse(data) {
+    try {
+        const course = await Course.create(data);
+        console.log(course);
+        return course;
+    } catch (ex) {
+        for (const field in ex.errors)
+            console.log(ex.errors[field].message);
+    }
+}
+
+run(async () => {
+    const course = await createCourse({
         name: 'Angular',
         category: 'WebDev',
         author: 'XYZ',
@@ -56,22 +65,8 @@ async function createCourse() {
         isPublished: true,
         price: 20.4
     });
+    console.log((await Course.findById(course._id)).price);
 
-    try {
-        const result = await course.save();
-        console.log(result);
-    }
-    catch (ex) {
-        for (error in ex.errors)
-            console.log(ex.errors[error].message);
-    }
-}
-
-async function getCourse() {
-    const Course = mongoose.model('Course', courseSchema);
-    const course = await Course.find({ _id: '5ccae73bbfd0a401ed40f82c' });
-    console.log(course);
-    console.log(course[0].price);
-}
-createCourse();
-getCourse();
+    // Fails validation: short name, bad category, no tags, no price.
+    await createCourse({ name: 'A', category: 'x', tags: [], isPublished: true });
+});
