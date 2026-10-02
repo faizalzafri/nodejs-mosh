@@ -1,4 +1,5 @@
-const p1 = Promise.resolve({ id: 1 });
+// Promise.resolve, Promise.reject, Promise.all and Promise.race.
+const p1 =Promise.resolve({ id: 1 });
 p1.then(result => console.log(result));
 
 const p2 = Promise.reject(new Error('Error Occurred'));
