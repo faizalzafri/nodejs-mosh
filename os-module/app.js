@@ -1,7 +1,5 @@
-const os = require('os');
+// Read memory info from the os module.
+const os = require('node:os');
 
-var tm = os.totalmem();
-var fm = os.freemem();
-
-console.log(`Total Memory : ${tm}`);
-console.log(`Total Memory : ${fm}`);
+console.log(`Total Memory : ${os.totalmem()}`);
+console.log(`Free Memory : ${os.freemem()}`);

@@ -1,11 +1,10 @@
-console.log('Logging..')
+// Top-level variables belong to the module, not to the global object.
+console.log('Logging..');
 global.console.log('Logging global');
 
-var message = 'This is not a global message';
+const message = 'This is not a global message';
 
 console.log(message);
-console.log(global.message); //undefined
-global.console.log(message);
-global.console.log(global.message); //undefined
+console.log(global.message); // undefined
 
-console.log(module); //this module object is not global
+console.log(module); // the module object is not global

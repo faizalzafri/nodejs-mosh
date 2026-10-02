@@ -1,14 +1,6 @@
-// (function (exports, require, module, __filename, __dirname) {
+// Node wraps each module in (function (exports, require, module, __filename, __dirname) { ... }).
+function log(message) {
+    console.log(message);
+}
 
-// })
-
-var url = 'http://somelogger.io/log';
-
-    function log(message) {
-        //send a http request
-        console.log(message);
-    }
-
-    //module.exports.log = log;
-
-    module.exports = log;
+module.exports = log;

@@ -1,5 +1,4 @@
-const path = require('path');
+// Split this file's path into root, dir, base, ext and name.
+const path = require('node:path');
 
-var pathObject = path.parse(__filename);
-
-console.log(pathObject);
+console.log(path.parse(__filename));
