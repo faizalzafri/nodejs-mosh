@@ -1,3 +1,4 @@
+// Promise.resolve, Promise.reject, Promise.all and Promise.race.
 const p1 = Promise.resolve({ id: 1 });
 p1.then(result => console.log(result));
 

@@ -1,9 +1,5 @@
+// Create a promise that fails after 2 seconds and handle the error.
 const p = new Promise((resolve, reject) => {
-
-    // setTimeout(() => {
-    //     resolve('In 2 seconds async operation executed successfully');
-    // }, 2000);
-
     setTimeout(()=>{
       reject(new Error('In 2 seconds async operation failed'));
     },2000);
