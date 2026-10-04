@@ -16,7 +16,7 @@ displayCommits();
 console.log('After');
 
 function getUser(id) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             console.log('Reading a user from a database...');
             resolve({ id: id, name: 'faiz' });
@@ -26,9 +26,9 @@ function getUser(id) {
 }
 
 function getRepositories(username) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(() => {
-            console.log('Calling GitHub API...');
+            console.log('Calling GitHub API for', username);
             resolve(['repo1', 'repo2', 'repo3']);
         }, 2000);
     });
@@ -37,7 +37,7 @@ function getRepositories(username) {
 function getCommits(repo) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            console.log('Calling GitHub API...');
+            console.log('Calling GitHub API for', repo);
             reject(new Error('Could not get commits'))
         }, 2000);
     });

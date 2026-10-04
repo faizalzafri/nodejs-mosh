@@ -23,14 +23,14 @@ Promise.all([parallelPromise1, parallelPromise2])
     .then(result => console.log('result', result))
     .catch(error => console.log('error', error.message));
 
-const parallelPromise5 = new Promise((resolve, reject) => {
+const parallelPromise5 = new Promise((resolve) => {
     setTimeout(() => {
         console.log('Async opn 5')
         resolve(5);
     }, 2000);
 });
 
-const parallelPromise6 = new Promise((resolve, reject) => {
+const parallelPromise6 = new Promise((resolve) => {
     setTimeout(() => {
         console.log('Async opn 6')
         resolve(new Error('6'));
