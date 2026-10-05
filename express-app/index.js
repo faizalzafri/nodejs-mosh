@@ -82,9 +82,14 @@ app.delete('/api/courses/:id', (req, res) => {
     res.send(course);
 });
 
-app.listen(3000, () => {
-    console.log('Listening on..');
-});
+// Start only when run directly; tests import the app and listen on their own port.
+if (require.main === module) {
+    app.listen(3000, () => {
+        console.log('Listening on..');
+    });
+}
+
+module.exports = app;
 
 // Sends 404 and returns undefined when no course matches :id.
 function findCourse(req, res) {
